@@ -1,0 +1,66 @@
+.videoContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
+}
+
+.videoContainer video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.custom-input {
+    color: #333333 !important;
+    background-color: #ebebeb !important;
+    border: 0px solid black !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 0px !important;
+    text-shadow: 0px 0px !important;
+}
+
+.apex-button {
+    background-color: #B93038 !important;
+}
+
+.apex-link {
+    color: #000000;
+}
+
+.login-line {
+    border: 1px solid #1d1d1d;
+    opacity: 0.25;
+    max-width: 75%;
+    margin: auto;
+}
+
+@media (max-width: 767px) {
+    .videoContainer video {
+        display: none;
+    }
+    .videoContainer {
+        background: url('../assets/apex-backgroud-767.jpg');
+        background-position: left top;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+}
+
+@media (max-width: 320px) {
+    .videoContainer video {
+        display: none;
+    }
+    .videoContainer {
+        background: url('../assets/apex-backgroud-320.jpg');
+        background-position: left top;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+}
