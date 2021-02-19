@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import video_background from '../assets/apex-background.mp4'
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
+import google_logo from '../assets/google-logo.svg'
 import './auth.css'
 
 class Login extends Component {
@@ -20,11 +21,11 @@ class Login extends Component {
                     <div className='column is-3-mobile'></div>
                 </div>
                 <div className='columns is-flex-mobile'>
-                    <div className='column is-6-desktop is-8-widescreen is-8-fullhd is-6-tablet is-2-mobile'></div>
-                    <div className='column is-6-desktop is-4-widescreen is-4-fullhd is-6-tablet is-8-mobile'>
-                        <div className='card'>
+                    <div className='column is-6-desktop is-8-widescreen is-8-fullhd is-6-tablet is-1-mobile'></div>
+                    <div className='column is-6-desktop is-4-widescreen is-4-fullhd is-6-tablet is-10-mobile'>
+                        <div className='card custom-card'>
                             <div className='card-content'>
-                                <div className='content'>
+                                <div className='content my-6'>
                                     <div className='columns is-hidden-mobile'>
                                         <div className='column is-3'></div>
                                         <div className='column is-6'>
@@ -48,7 +49,7 @@ class Login extends Component {
                                         </div>
                                         <div className='column is-1 is-hidden-mobile'></div>
                                     </div>
-                                    <div className='columns'>
+                                    <div className='columns mb-5'>
                                         <div className='column is-2 is-hidden-mobile'></div>
                                         <div className='column is-8'>
                                             <div className='columns is-vcentered is-centered'>
@@ -67,6 +68,18 @@ class Login extends Component {
                                         <div className='column is-2 is-hidden-mobile'></div>
                                     </div>
                                     <hr className='login-line' />
+                                    <div className='columns is-vcentered is-centered mt-4'>
+                                        <div className='column is-full'>
+                                            <div className='control has-text-centered'>
+                                                <button className='button google-button'>
+                                                    <span className='icon'>
+                                                        <img src={google_logo} alt="google icon" />
+                                                    </span>
+                                                    <span className='is-hidden-mobile'>&nbsp;Iniciar sesión con google</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

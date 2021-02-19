@@ -28,6 +28,13 @@
 
 .apex-button {
     background-color: #B93038 !important;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.apex-button:hover {
+    box-shadow: inset 400px 0 0 0 #386C94;
 }
 
 .apex-link {
@@ -39,6 +46,31 @@
     opacity: 0.25;
     max-width: 75%;
     margin: auto;
+    margin-bottom: 12px;
+}
+
+.google-button {
+    font-family: "Product Sans", sans-serif;
+    font-size: 0.8rem !important;
+    background-color: #eeeeee !important;
+    border: 0px solid #eeeeee !important;
+    font-weight: bold;
+    border-radius: 200px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.google-button:hover {
+    font-weight: bold;
+    color: #eeeeee !important;
+    box-shadow: inset 400px 0 0 0 #386C94;
+}
+
+.custom-card {
+    background-color: #eeeeee !important;
 }
 
 @media (max-width: 767px) {
@@ -51,6 +83,10 @@
         background-size: 100% auto;
         background-repeat: no-repeat;
     }
+    .google-button:hover {
+        box-shadow: inset 400px 0 0 0 #eeeeee;
+    }
+    
 }
 
 @media (max-width: 320px) {
@@ -62,5 +98,8 @@
         background-position: left top;
         background-size: 100% auto;
         background-repeat: no-repeat;
+    }
+    .google-button:hover {
+        box-shadow: inset 400px 0 0 0 #eeeeee;
     }
 }
