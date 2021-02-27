@@ -1,0 +1,10 @@
+.apex-button {
+    background-color: #B93038 !important;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.apex-button:hover {
+    box-shadow: inset 400px 0 0 0 #386C94;
+}

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import video_background from '../assets/apex-background.mp4'
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
@@ -9,8 +8,7 @@ import './auth.css'
 class Login extends Component {
     render() {
         return (
-        <div>
-            <div className='container' style={{
+        <div className='container' style={{
                 padding: '3rem 1.5rem'
             }}>
                 <div className='columns is-flex-mobile is-hidden-tablet'>
@@ -44,6 +42,11 @@ class Login extends Component {
                                             <div className='field'>
                                                 <div className='control'>
                                                     <input type='password' className='input custom-input' onChange={console.log("Hola")} placeholder='Contraseña' />
+                                                    <div className='columns'>
+                                                        <div className='column is-full has-text-right'>
+                                                            <small><Link to='/recover' className='recover-password-link'>¿Olvidaste tu contraseña?</Link></small>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +58,7 @@ class Login extends Component {
                                             <div className='columns is-vcentered is-centered'>
                                                 <div className='column is-6'>
                                                     <div className='control has-text-centered'>
-                                                        <Link to='/registrarse' className='apex-link' >Crear cuenta</Link>
+                                                        <Link to='/register' className='apex-link' >Crear cuenta</Link>
                                                     </div>
                                                 </div>
                                                 <div className='column is-6'>
@@ -85,13 +88,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='videoContainer'>
-                <video autoPlay muted loop>
-                    <source src={video_background} type='video/mp4' />
-                </video>
-            </div>
-        </div>)
+            </div>)
     }
 }
 

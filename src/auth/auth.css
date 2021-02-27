@@ -73,6 +73,10 @@
     background-color: #eeeeee !important;
 }
 
+.recover-password-link {
+    color: #333333 !important;
+}
+
 @media (max-width: 767px) {
     .videoContainer video {
         display: none;

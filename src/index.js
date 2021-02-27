@@ -8,12 +8,10 @@ import {
     Redirect
 } from "react-router-dom"
 //import 'bulma'
-import Login from './auth/login'
-import Recuperar from "./auth/recover"
-import Registro from "./auth/register"
 import Main from "./main/main"
 import NotFound from './404'
 import './assets/css/global.css'
+import MainAuth from './auth/main'
 
 ReactDOM.render(
     (<BrowserRouter>
@@ -21,31 +19,31 @@ ReactDOM.render(
             <Switch>
                 <Route exact path="/">
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_token') == null && localStorage.getItem('overwex_user_mail') == null ? 
                             <Main /> : 
                             <Redirect to='/login' />
                     }
                 </Route>
                 <Route exact path="/login">
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_token') == null && localStorage.getItem('overwex_user_mail') == null ? 
                             <Redirect to='/' /> : 
-                            <Login />
+                            <MainAuth showPage='login' />
                     }
                 </Route>
                 <Route exact path="/register">
                     {
-                        !localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        !localStorage.getItem('overwex_token') == null && localStorage.getItem('overwex_user_mail') == null ? 
                             <Redirect to='/' /> : 
-                            <Registro />
+                            <MainAuth showPage='register' />
                             
                     }
                 </Route>
                 <Route exact path="/recover">
                     {
-                        !localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        !localStorage.getItem('overwex_token') == null && localStorage.getItem('overwex_user_mail') == null ? 
                             <Redirect to='/' /> : 
-                            <Recuperar />
+                            <MainAuth showPage='recover' />
                     }
                 </Route>
                 <Route>
