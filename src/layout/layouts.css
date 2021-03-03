@@ -1,0 +1,30 @@
+.left-menu {
+    background-color: #363636;
+}
+
+.apex-button {
+    background-color: #B93038 !important;
+    -webkit-transition: ease-out 0.4s;
+    -moz-transition: ease-out 0.4s;
+    transition: ease-out 0.4s;
+}
+
+.apex-button:hover {
+    box-shadow: inset 400px 0 0 0 #386C94;
+}
+
+.apex-link {
+    color: #eeeeee !important;
+}
+
+.apex-line {
+    border: 1px solid #ffffff;
+    opacity: 0.7;
+    max-width: 80%;
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+#mainmenu {
+    background-color: #363636;
+}

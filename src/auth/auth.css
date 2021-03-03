@@ -38,7 +38,7 @@
 }
 
 .apex-link {
-    color: #000000;
+    color: #000000 !important;
 }
 
 .login-line {
@@ -75,6 +75,10 @@
 
 .recover-password-link {
     color: #333333 !important;
+}
+
+.apex-notification {
+    background-color: #B93038 !important;
 }
 
 @media (max-width: 767px) {

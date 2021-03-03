@@ -8,3 +8,16 @@
 .apex-button:hover {
     box-shadow: inset 400px 0 0 0 #386C94;
 }
+
+.custom-input {
+    color: #333333 !important;
+    background-color: #ebebeb !important;
+    border: 0px solid black !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 0px !important;
+    text-shadow: 0px 0px !important;
+}
+
+.is-clickable {
+    cursor: pointer;
+}

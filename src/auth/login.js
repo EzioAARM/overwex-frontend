@@ -3,9 +3,41 @@ import { Link } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
+import { Redirect, useHistory } from "react-router"
 import './auth.css'
 
 class Login extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: "",
+            password: "",
+            loggedin: false,
+            notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden'
+        }
+        this.handleChange = this.handleChange.bind(this)
+        this.login = this.login.bind(this)
+    }
+
+    login() {
+        if (this.state.username === 'EzioA' && this.state.password === 'admin123') {
+            localStorage.setItem('overwex_token', this.state.username)
+            localStorage.setItem('overwex_user_mail', this.state.password)
+            window.location.reload(false)
+        }
+        else this.setState({
+            notificationClass: 'notification is-danger apex-notification has-text-centered'
+        })
+    }
+
+    handleChange(event) {
+        this.setState({
+            username: (event.target.id === 'username') ? event.target.value : this.state.username,
+            password: (event.target.id === 'password') ? event.target.value : this.state.password
+        })
+    }
+
     render() {
         return (
         <div className='container' style={{
@@ -34,14 +66,19 @@ class Login extends Component {
                                     <div className='columns'>
                                         <div className='column is-1 is-hidden-mobile'></div>
                                         <div className='column is-10'>
+                                            <div className={this.state.notificationClass}>
+                                                Usuario o contraseña incorrectos
+                                            </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='text' className='input custom-input' onChange={console.log("Hola")} placeholder='Nombre de usuario' />
+                                                    <input type='text' className='input custom-input' id='username' 
+                                                        onChange={this.handleChange} placeholder='Nombre de usuario' />
                                                 </div>
                                             </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='password' className='input custom-input' onChange={console.log("Hola")} placeholder='Contraseña' />
+                                                    <input type='password' className='input custom-input' id='password' 
+                                                        onChange={this.handleChange} placeholder='Contraseña' />
                                                     <div className='columns'>
                                                         <div className='column is-full has-text-right'>
                                                             <small><Link to='/recover' className='recover-password-link'>¿Olvidaste tu contraseña?</Link></small>
@@ -63,7 +100,7 @@ class Login extends Component {
                                                 </div>
                                                 <div className='column is-6'>
                                                     <div className='control'>
-                                                        <button className='button is-danger apex-button is-fullwidth' >Iniciar Sesión</button>
+                                                        <button className='button is-danger apex-button is-fullwidth' onClick={this.login}>Iniciar Sesión</button>
                                                     </div>
                                                 </div>
                                             </div>
