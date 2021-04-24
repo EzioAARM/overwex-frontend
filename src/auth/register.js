@@ -1,11 +1,94 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
+import { globals } from "../globals";
 import './auth.css'
 
 class Registro extends Component {
+    
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: "",
+            email: "",
+            name: "",
+            password: "",
+            confirm_password: "",
+            user_input_error: "",
+            email_input_error: "",
+            name_input_error: "",
+            pass_input_error: "",
+            confirm_password_input_error: "",
+            apexButtonClass: 'button is-danger apex-button is-fullwidth',
+            googleButtonClass: 'button google-button',
+            notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden',
+            notificationMessage: ""
+        }
+        this.handleChange = this.handleChange.bind(this)
+        this.createAccount = this.createAccount.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({
+            username: (event.target.id === 'username') ? event.target.value : this.state.username,
+            email: (event.target.id === 'email') ? event.target.value : this.state.email,
+            name: (event.target.id === 'name') ? event.target.value : this.state.name,
+            password: (event.target.id === 'password') ? event.target.value : this.state.password,
+            confirm_password: (event.target.id === 'password_verify') ? event.target.value : this.state.confirm_password
+        })
+    }
+
+    createAccount() {
+        this.setState({
+            notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden',
+            notificationMessage: '',
+        })
+        if (this.state.username !== "" && this.state.email !== "" && this.state.name !== "" &&
+        this.state.password !== "" && this.state.confirm_password !== "") {
+            if (this.state.password === this.state.confirm_password) {
+                axios.post(globals.API_URL + "api/v1/auth/register", {
+                    Username: this.state.username, 
+                    Password: this.state.password, 
+                    Name: this.state.name, 
+                    Email: this.state.email
+                }).then(data => {
+                    this.setState({
+                        notificationClass: 'notification is-success has-text-centered',
+                        notificationMessage: "Se envio un codigo de verificacion al correo " + this.state.email,
+                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
+                        googleButtonClass: 'button google-button'
+                    })
+                })
+                .catch(error => {
+                    this.setState({
+                        notificationClass: 'notification is-danger apex-notification has-text-centered',
+                        notificationMessage: error.response.data.message,
+                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
+                        googleButtonClass: 'button google-button'
+                    })
+                })
+            } else {
+                this.setState({
+                    notificationClass: 'notification is-danger apex-notification has-text-centered',
+                    notificationMessage: 'Las contraseñas no coinciden',
+                })
+            }
+        } else {
+            this.setState({
+                notificationClass: 'notification is-danger apex-notification has-text-centered',
+                notificationMessage: 'Los campos nombre completo, nombre de usuario, correo electronico, contraseña y confirmar contraseña son requeridos',
+                user_input_error: (this.state.username === "") ? "danger-input is-danger" : "",
+                email_input_error: (this.state.email === "") ? "danger-input is-danger" : "",
+                name_input_error: (this.state.name === "") ? "danger-input is-danger" : "",
+                pass_input_error: (this.state.password === "") ? "danger-input is-danger" : "",
+                confirm_password_input_error: (this.state.confirm_password === "") ? "danger-input is-danger" : "",
+            })
+        }
+    }
+
     render() {
         return (
             <div className='container' style={{
@@ -34,24 +117,32 @@ class Registro extends Component {
                                     <div className='columns'>
                                         <div className='column is-1 is-hidden-mobile'></div>
                                         <div className='column is-10'>
+                                            <div className={this.state.notificationClass}>
+                                                {this.state.notificationMessage}
+                                            </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='text' className='input custom-input' onChange={console.log("Hola")} placeholder='Nombre de usuario' />
+                                                    <input type='text' className={'input custom-input' + this.state.name_input_error} id='name' onChange={this.handleChange} placeholder='Nombre completo' />
                                                 </div>
                                             </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='text' className='input custom-input' onChange={console.log("Hola")} placeholder='Correo electrónico' />
+                                                    <input type='text' className={'input custom-input' + this.state.user_input_error} id='username' onChange={this.handleChange} placeholder='Nombre de usuario' />
                                                 </div>
                                             </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='password' className='input custom-input' onChange={console.log("Hola")} placeholder='Contraseña' />
+                                                    <input type='text' className={'input custom-input' + this.state.email_input_error} id='email' onChange={this.handleChange} placeholder='Correo electrónico' />
                                                 </div>
                                             </div>
                                             <div className='field'>
                                                 <div className='control'>
-                                                    <input type='password' className='input custom-input' onChange={console.log("Hola")} placeholder='Confirmar contraseña' />
+                                                    <input type='password' className={'input custom-input' + this.state.pass_input_error} id='password' onChange={this.handleChange} placeholder='Contraseña' />
+                                                </div>
+                                            </div>
+                                            <div className='field'>
+                                                <div className='control'>
+                                                    <input type='password' className={'input custom-input' + this.state.confirm_password_input_error} id='password_verify' onChange={this.handleChange} placeholder='Confirmar contraseña' />
                                                 </div>
                                             </div>
                                         </div>
@@ -68,7 +159,7 @@ class Registro extends Component {
                                                 </div>
                                                 <div className='column is-6'>
                                                     <div className='control'>
-                                                        <button className='button is-danger apex-button is-fullwidth' >Crear cuenta</button>
+                                                        <button className={this.state.apexButtonClass} onClick={this.createAccount}>Crear cuenta</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -79,7 +170,7 @@ class Registro extends Component {
                                     <div className='columns is-vcentered is-centered mt-4'>
                                         <div className='column is-full'>
                                             <div className='control has-text-centered'>
-                                                <button className='button google-button'>
+                                                <button className={this.state.googleButtonClass}>
                                                     <span className='icon'>
                                                         <img src={google_logo} alt="google icon" />
                                                     </span>

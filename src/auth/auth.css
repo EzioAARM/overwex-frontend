@@ -26,6 +26,10 @@
     text-shadow: 0px 0px !important;
 }
 
+.danger-input {
+    border: 1px solid #B93038 !important;
+}
+
 .apex-button {
     background-color: #B93038 !important;
     -webkit-transition: ease-out 0.4s;

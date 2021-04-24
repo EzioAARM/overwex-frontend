@@ -28,3 +28,13 @@
 #mainmenu {
     background-color: #363636;
 }
+
+.sidenav {
+    height: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.sidenav ul {
+    margin-top: 50px;
+}

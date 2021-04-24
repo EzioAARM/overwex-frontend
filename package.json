@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.0",
+    "axios": "^0.21.1",
     "bulma": "^0.9.2",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
@@ -23,7 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "css-build": "node-sass src/assets/scss/global.scss src/assets/css/global.css --omit-source-map-url ",
-    "css-watch": "npm run css-build -- --watch"
+    "css-watch": "npm run css-build -- --watch",
+    "deploy": "aws s3 sync --acl public-read --delete build/ s3://overwex-frontend"
   },
   "eslintConfig": {
     "extends": [

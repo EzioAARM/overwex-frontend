@@ -19,40 +19,46 @@ ReactDOM.render(
             <Switch>
                 <Route exact path={['/', '/find-user']}>
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Main showPage='find-user' /> : 
                             <Redirect to='/login' />
                     }
                 </Route>
                 <Route exact path="/history">
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Main showPage='history' /> : 
                             <Redirect to='/login' />
                     }
                 </Route>
                 <Route exact path="/profile">
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Main showPage='profile' /> : 
                             <Redirect to='/login' />
                     }
                 </Route>
                 <Route path="/apex-user/:id" component={(props) => {
-                    if (localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null) 
+                    if (localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null) 
                         return <Main showPage='apex-user' id={props.match.params.id} />
                     else return <Redirect to='/login' />
                 }} />
                 <Route exact path="/login">
                     {
-                        localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Redirect to='/' /> : 
                             <MainAuth showPage='login' />
                     }
                 </Route>
                 <Route exact path="/register">
                     {
-                        !localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        !localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Redirect to='/' /> : 
                             <MainAuth showPage='register' />
                             
@@ -60,7 +66,8 @@ ReactDOM.render(
                 </Route>
                 <Route exact path="/recover">
                     {
-                        !localStorage.getItem('overwex_token') != null && localStorage.getItem('overwex_user_mail') != null ? 
+                        !localStorage.getItem('overwex_id_token') != null && localStorage.getItem('overwex_refresh_token') != null &&
+                        localStorage.getItem('overwex_token') != null ? 
                             <Redirect to='/' /> : 
                             <MainAuth showPage='recover' />
                     }

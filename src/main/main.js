@@ -20,20 +20,17 @@ class Main extends Component {
         return (
         <div>
             <Header />
-            <div className='columns is-gapless is-mobile'>
-                <div className='column is-2 is-hidden-touch'>
-                    <div className='hero is-fullheight-with-navbar is-dark'>
-                        <div className='hero-body is-align-items-flex-start'>
-                            <Sidebar />
-                        </div>
+            <section className='main-content columns is-fullheight'>
+                <Sidebar />
+                <div className='column is-2'></div>
+                <div className='column is-10 mt-6 pt-6 mb-6 pb-6'>
+                    <div className='columns is-mobile'>
+                        <div className='column is-2 is-hidden-touch'></div>
+                            {this.renderContent()}
+                        <div className='column is-2 is-hidden-touch'></div>
                     </div>
                 </div>
-                <div className='column is-10-desktop is-12-mobile'>
-                    {
-                        this.renderContent()
-                    }
-                </div>
-            </div>
+            </section>
         </div>)
     }
 }

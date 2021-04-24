@@ -36,7 +36,7 @@ class Header extends Component {
 
     render() {
         return (
-            <nav className='navbar is-dark' role='navigation' aria-label='main navigation'>
+            <nav className='navbar is-dark is-fixed-top' role='navigation' aria-label='main navigation'>
                 <div className='navbar-brand'>
                     <Link to="/" className="navbar-item">
                         Overwex

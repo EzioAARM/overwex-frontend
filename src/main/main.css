@@ -21,3 +21,16 @@
 .is-clickable {
     cursor: pointer;
 }
+
+.add-overflow {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.is-fixed {
+    position: fixed;
+}
+
+.has-scroll {
+    overflow-y: scroll;
+}
