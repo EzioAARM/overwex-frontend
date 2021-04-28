@@ -2,8 +2,11 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { AccountContext } from "../auth/Accounts";
 
 class Header extends Component {
+
+    static contextType = AccountContext
 
     constructor(props) {
         super(props)
@@ -29,9 +32,8 @@ class Header extends Component {
     }
 
     logout() {
-        localStorage.removeItem('overwex_token')
-        localStorage.removeItem('overwex_user_mail')
-        window.location.reload(false)
+        this.context.logout()
+        window.location.reload()
     }
 
     render() {

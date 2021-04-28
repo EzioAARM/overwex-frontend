@@ -1,4 +1,4 @@
-import axios from "axios";
+import { CognitoUserAttribute, CognitoUserPool } from "amazon-cognito-identity-js";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
@@ -7,7 +7,11 @@ import google_logo from '../assets/google-logo.svg'
 import { globals } from "../globals";
 import './auth.css'
 
+const UserPool = new CognitoUserPool(globals.USER_POOL_INFO)
+
 class Registro extends Component {
+
+    UserPool = new CognitoUserPool(globals.USER_POOL_INFO)
     
     constructor(props) {
         super(props)
@@ -28,7 +32,7 @@ class Registro extends Component {
             notificationMessage: ""
         }
         this.handleChange = this.handleChange.bind(this)
-        this.createAccount = this.createAccount.bind(this)
+        this.signUp = this.signUp.bind(this)
     }
 
     handleChange(event) {
@@ -37,11 +41,16 @@ class Registro extends Component {
             email: (event.target.id === 'email') ? event.target.value : this.state.email,
             name: (event.target.id === 'name') ? event.target.value : this.state.name,
             password: (event.target.id === 'password') ? event.target.value : this.state.password,
-            confirm_password: (event.target.id === 'password_verify') ? event.target.value : this.state.confirm_password
+            confirm_password: (event.target.id === 'password_verify') ? event.target.value : this.state.confirm_password,
+            user_input_error: (this.state.username === "") ? "danger-input is-danger" : "",
+            email_input_error: (this.state.email === "") ? "danger-input is-danger" : "",
+            name_input_error: (this.state.name === "") ? "danger-input is-danger" : "",
+            pass_input_error: (this.state.password === "") ? "danger-input is-danger" : "",
+            confirm_password_input_error: (this.state.confirm_password === "") ? "danger-input is-danger" : ""
         })
     }
 
-    createAccount() {
+    signUp() {
         this.setState({
             notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden',
             notificationMessage: '',
@@ -49,27 +58,37 @@ class Registro extends Component {
         if (this.state.username !== "" && this.state.email !== "" && this.state.name !== "" &&
         this.state.password !== "" && this.state.confirm_password !== "") {
             if (this.state.password === this.state.confirm_password) {
-                axios.post(globals.API_URL + "api/v1/auth/register", {
-                    Username: this.state.username, 
-                    Password: this.state.password, 
-                    Name: this.state.name, 
-                    Email: this.state.email
-                }).then(data => {
-                    this.setState({
-                        notificationClass: 'notification is-success has-text-centered',
-                        notificationMessage: "Se envio un codigo de verificacion al correo " + this.state.email,
-                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
-                        googleButtonClass: 'button google-button'
-                    })
-                })
-                .catch(error => {
-                    this.setState({
-                        notificationClass: 'notification is-danger apex-notification has-text-centered',
-                        notificationMessage: error.response.data.message,
-                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
-                        googleButtonClass: 'button google-button'
-                    })
-                })
+                UserPool.signUp(
+                    this.state.username,
+                    this.state.password, 
+                    [
+                        new CognitoUserAttribute({
+                            Name: 'email',
+                            Value: this.state.email
+                        }),
+                        new CognitoUserAttribute({
+                            Name: 'name',
+                            Value: this.state.name
+                        })
+                    ],
+                    null,
+                    (err, data) => {
+                        if (err) {
+                            console.log(err)
+                            this.setState({
+                                notificationClass: 'notification is-danger apex-notification has-text-centered',
+                                notificationMessage: err.message,
+                            })
+                        }
+                        else {
+                            console.log(data)
+                            this.setState({
+                                notificationClass: 'notification is-success has-text-centered',
+                                notificationMessage: 'Se envio un correo a la direccion ' + this.state.email,
+                            })
+                        }
+                    }
+                )
             } else {
                 this.setState({
                     notificationClass: 'notification is-danger apex-notification has-text-centered',
@@ -159,7 +178,7 @@ class Registro extends Component {
                                                 </div>
                                                 <div className='column is-6'>
                                                     <div className='control'>
-                                                        <button className={this.state.apexButtonClass} onClick={this.createAccount}>Crear cuenta</button>
+                                                        <button className={this.state.apexButtonClass} onClick={this.signUp}>Crear cuenta</button>
                                                     </div>
                                                 </div>
                                             </div>

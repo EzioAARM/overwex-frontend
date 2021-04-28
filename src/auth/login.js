@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
+import { AccountContext } from './Accounts'
 import './auth.css'
-import axios from "axios";
-import { globals } from "../globals";
 
 class Login extends Component {
+
+    static contextType = AccountContext
 
     constructor(props) {
         super(props)
@@ -24,6 +25,20 @@ class Login extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.login = this.login.bind(this)
+        this.doLogin = this.doLogin.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({
+            username: (event.target.id === 'username') ? event.target.value : this.state.username,
+            password: (event.target.id === 'password') ? event.target.value : this.state.password
+        })
+    }
+
+    doLogin(event) {
+        if (event.key === 'Enter') {
+            this.login()
+        }
     }
 
     login() {
@@ -36,22 +51,24 @@ class Login extends Component {
                 user_input_error: "",
                 pass_input_error: ""
             })
-            axios.post(globals.API_URL + "api/v1/auth/login", {
-                Username: this.state.username,
-                Password: this.state.password
-            }).then(data => {
-                localStorage.setItem('overwex_id_token', data.data.idToken)
-                localStorage.setItem('overwex_refresh_token', data.data.refreshToken)
-                localStorage.setItem('overwex_token', data.data.token)
-                window.location.reload()
-            }).catch(error => {
-                this.setState({
-                    notificationClass: 'notification is-danger apex-notification has-text-centered',
-                    notificationMessage: error.response.data.message,
-                    apexButtonClass: 'button is-danger apex-button is-fullwidth',
-                    googleButtonClass: 'button google-button'
+            this.context.authenticate(this.state.username, this.state.password)
+                .then(data => {
+                    window.location.reload()
                 })
-            })
+                .catch(error => {
+                    this.setState({
+                        notificationClass: 'notification is-danger apex-notification has-text-centered',
+                        notificationMessage: error.message,
+                        user_input_error: "danger-input is-danger",
+                        pass_input_error: "danger-input is-danger"
+                    })
+                })
+                .finally(() => {
+                    this.setState({
+                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
+                        googleButtonClass: 'button google-button'
+                    })
+                })
         } else {
             this.setState({
                 notificationClass: 'notification is-danger apex-notification has-text-centered',
@@ -60,13 +77,6 @@ class Login extends Component {
                 pass_input_error: (this.state.password === "") ? "danger-input is-danger" : ""
             })
         }
-    }
-
-    handleChange(event) {
-        this.setState({
-            username: (event.target.id === 'username') ? event.target.value : this.state.username,
-            password: (event.target.id === 'password') ? event.target.value : this.state.password
-        })
     }
 
     render() {
@@ -103,13 +113,13 @@ class Login extends Component {
                                             <div className='field'>
                                                 <div className='control'>
                                                     <input type='text' className={"input custom-input" + this.state.user_input_error} id='username' 
-                                                        onChange={this.handleChange} placeholder='Nombre de usuario' />
+                                                        onChange={this.handleChange} onKeyDown={this.doLogin} placeholder='Nombre de usuario' />
                                                 </div>
                                             </div>
                                             <div className='field'>
                                                 <div className='control'>
                                                     <input type='password' className={"input custom-input" + this.state.pass_input_error} id='password' 
-                                                        onChange={this.handleChange} placeholder='Contraseña' />
+                                                        onChange={this.handleChange} onKeyDown={this.doLogin} placeholder='Contraseña' />
                                                     <div className='columns'>
                                                         <div className='column is-full has-text-right'>
                                                             <small><Link to='/recover' className='recover-password-link'>¿Olvidaste tu contraseña?</Link></small>
