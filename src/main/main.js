@@ -11,9 +11,10 @@ class Main extends Component {
 
     renderContent = () => {
         if (this.props.showPage === 'find-user') return <FindUser />
-        if (this.props.showPage === 'history') return <History />
-        if (this.props.showPage === 'profile') return <Profile />
-        if (this.props.showPage === 'apex-user') return <ApexUser id={this.props.id} />
+        else if (this.props.showPage === 'history') return <History />
+        else if (this.props.showPage === 'profile') return <Profile />
+        else if (this.props.showPage === 'apex-user') return <ApexUser user={this.props.user} platform={this.props.platform} imageUrl={this.props.imageUrl} />
+        else return <FindUser />
     }
 
     render() {

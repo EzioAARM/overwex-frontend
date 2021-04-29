@@ -17,17 +17,20 @@ class Routing extends Component {
     static contextType = AccountContext
 
     state = {
-        isLoggedIn: false
+        isLoggedIn: false,
+        sesionVerificada: false
     }
 
     componentDidMount() {
         this.context.getSession()
             .then(session => {
-                console.log(session)
                 this.setState({
-                    isLoggedIn: true
+                    isLoggedIn: true,
                 })
             })
+            .finally(() => this.setState({
+                sesionVerificada: true
+            }))
     }
 
     render() {
@@ -38,10 +41,19 @@ class Routing extends Component {
                         <Route exact path={['/', '/find-user']}>
                             {
                                 this.state.isLoggedIn ? 
-                                    <Main showPage='find-user' /> : 
+                                    //<Main showPage='find-user' /> : 
+                                    <Main showPage='apex-user' 
+                                        platform='origin' 
+                                        user='EzioAARM' 
+                                        imageUrl='https://secure.download.dm.origin.com/production/avatar/prod/7/41/208x208.JPEG' /> : 
                                     <Redirect to='/login' />
                             }
                         </Route>
+                        <Route exact path="/apex-user/:platform/:user" component={(props) => {
+                            if (this.state.isLoggedIn) 
+                                return <Main showPage='apex-user' platform={props.match.params.platform} user={props.match.params.user} />
+                            else return <Redirect to='/login' />
+                        }} />
                         <Route exact path="/history">
                             {
                                 this.state.isLoggedIn ? 
@@ -56,11 +68,6 @@ class Routing extends Component {
                                     <Redirect to='/login' />
                             }
                         </Route>
-                        <Route path="/apex-user/:id" component={(props) => {
-                            if (this.state.isLoggedIn) 
-                                return <Main showPage='apex-user' id={props.match.params.id} />
-                            else return <Redirect to='/login' />
-                        }} />
                         <Route exact path="/login">
                             {
                                 this.state.isLoggedIn ? 
