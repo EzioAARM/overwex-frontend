@@ -2,15 +2,21 @@ import React, { Component } from 'react'
 import {
     Switch,
     BrowserRouter as Router, 
-    Route, BrowserRouter,
-    Redirect
+    Route, 
+    BrowserRouter
 } from "react-router-dom"
-//import 'bulma'
+import { AnimatedSwitch } from 'react-router-transition';
 import Main from "./main/main"
-import NotFound from './404'
+import './routing.css'
 import './assets/css/global.css'
-import MainAuth from './auth/main'
 import { AccountContext } from './auth/Accounts'
+import FindUser from './main/find-user'
+import ApexUser from './main/apex-user'
+import Profile from './main/perfil'
+import MainAuth from './auth/main'
+import Login from './auth/login'
+import Registro from './auth/register'
+import Recuperar from './auth/recover'
 
 class Routing extends Component {
     
@@ -38,61 +44,37 @@ class Routing extends Component {
             <BrowserRouter>
                 <Router>
                     <Switch>
-                        <Route exact path={['/', '/find-user']}>
-                            {
-                                this.state.isLoggedIn ? 
-                                    //<Main showPage='find-user' /> : 
-                                    <Main showPage='apex-user' 
-                                        platform='origin' 
-                                        user='EzioAARM' 
-                                        imageUrl='https://secure.download.dm.origin.com/production/avatar/prod/7/41/208x208.JPEG' /> : 
-                                    <Redirect to='/login' />
-                            }
+                        <Route exact path={['/', '/find-user']} >
+                            <Main>
+                                <FindUser />
+                            </Main>
                         </Route>
-                        <Route exact path="/apex-user/:platform/:user" component={(props) => {
-                            if (this.state.isLoggedIn) 
-                                return <Main showPage='apex-user' platform={props.match.params.platform} user={props.match.params.user} />
-                            else return <Redirect to='/login' />
+                        <Route exact path='/apex-user/:platform/:user' render={(props) => {
+                            return <Main>
+                                <ApexUser user={props.match.params.user} platform={props.match.params.platform} />
+                            </Main>
                         }} />
-                        <Route exact path="/history">
-                            {
-                                this.state.isLoggedIn ? 
-                                    <Main showPage='history' /> : 
-                                    <Redirect to='/login' />
-                            }
-                        </Route>
-                        <Route exact path="/profile">
-                            {
-                                this.state.isLoggedIn ? 
-                                    <Main showPage='profile' /> : 
-                                    <Redirect to='/login' />
-                            }
+                        <Route exact path='/profile'>
+                            <Main>
+                                <Profile />
+                            </Main>
                         </Route>
                         <Route exact path="/login">
-                            {
-                                this.state.isLoggedIn ? 
-                                    <Redirect to='/' /> : 
-                                    <MainAuth showPage='login' />
-                            }
+                            <MainAuth>
+                                <Login />
+                            </MainAuth>
                         </Route>
                         <Route exact path="/register">
-                            {
-                                !this.state.isLoggedIn ? 
-                                    <Redirect to='/' /> : 
-                                    <MainAuth showPage='register' />
-                                    
-                            }
+                            <MainAuth>
+                                <Registro />
+                            </MainAuth>
                         </Route>
                         <Route exact path="/recover">
-                            {
-                                !this.state.isLoggedIn ? 
-                                    <Redirect to='/' /> : 
-                                    <MainAuth showPage='recover' />
-                            }
+                            <MainAuth>
+                                <Recuperar />
+                            </MainAuth>
                         </Route>
-                        <Route>
-                            <NotFound />
-                        </Route>
+                        
                     </Switch>
                 </Router>
             </BrowserRouter>

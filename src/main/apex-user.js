@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import playstation_logo from '../assets/playstation.png'
 import origin_logo from '../assets/origin.png'
 import xbox_logo from '../assets/xbox.png'
+import octane_face from '../assets/octane_face.jpg'
 
 class ApexUser extends Component {
 
@@ -98,7 +99,8 @@ class ApexUser extends Component {
                     kills: 201.0,
                     percentile: 73.0
                 }
-            ]
+            ],
+            imageUrl: 'https://avatar-cdn.tracker.gg/api/avatar/2/EzioAARM.png'
         },
         obtuvoData: false
     }
@@ -126,12 +128,18 @@ class ApexUser extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div className='mt-6'>
                 <div className='columns is-mobile is-centered'>
                     <div className='column is-narrow'>
-                        <figure className='image is-128x128'>
-                            <img className='is-rounded' src={this.props.imageUrl} alt={this.props.user} />
+                        <figure className='image is-128x128 element is-loading'>
+                            {
+                                this.state.obtuvoData ? 
+                                    <img className='is-rounded' src={this.state.userInfo.imageUrl} alt={this.props.user} /> : 
+                                    <img className='is-rounded' src={octane_face} alt={this.props.user} />
+                            }
+                            
                         </figure>
                     </div>
                 </div>
@@ -142,17 +150,19 @@ class ApexUser extends Component {
                 </div>
                 <div className='columns is-mobile is-centered'>
                     <div className='column is-narrow'>
-                        {this.props.platform === 'psn' ? 
-                            (<figure className='image is-32x32'>
-                                <img src={playstation_logo} alt="Playstation" />
-                            </figure>) : 
-                        this.props.platform === 'xbl' ? 
-                            (<figure className='image is-16x16'>
-                                <img src={xbox_logo} alt="Xbox" />
-                            </figure>) : 
-                            (<figure className='image is-16x16'>
-                                <img src={origin_logo} alt="Origin" />
-                            </figure>)}
+                        {
+                            this.props.platform === 'psn' ? 
+                                (<figure className='image is-32x32'>
+                                    <img src={playstation_logo} alt="Playstation" />
+                                </figure>) : 
+                            this.props.platform === 'xbl' ? 
+                                (<figure className='image is-16x16'>
+                                    <img src={xbox_logo} alt="Xbox" />
+                                </figure>) : 
+                                (<figure className='image is-16x16'>
+                                    <img src={origin_logo} alt="Origin" />
+                                </figure>)
+                        }
                     </div>
                 </div>
                 <div className='columns is-multiline'>

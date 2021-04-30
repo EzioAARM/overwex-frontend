@@ -1,6 +1,5 @@
-import axios from "axios";
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
 import { globals } from "../globals";
 import playstation_logo from '../assets/playstation.png'
@@ -73,35 +72,36 @@ class FindUser extends Component {
             } = user
             return (
                 <div className='column' key={platform}>
-                    <div className='card apex-finder-card' onClick={() => {
-                        return <Redirect push to={'/apex-user/' + platform + '/' + username} />
-                    }}>
-                        <div className='card-content'>
-                            <div className='media'>
-                                <div className='media-left'>
-                                    <figure className='image is-128x128'>
-                                        <img src={imageUrl} alt={username} />
-                                    </figure>
-                                </div>
-                                <div className='media-content'>
-                                    <p className='title is-4'>
-                                        {username}
-                                    </p>
-                                    {platform === 'psn' ? 
-                                        (<figure className='image is-32x32'>
-                                            <img src={playstation_logo} alt="Playstation" />
-                                        </figure>) : 
-                                    platform === 'xbl' ? 
-                                        (<figure className='image is-16x16'>
-                                            <img src={xbox_logo} alt="Xbox" />
-                                        </figure>) : 
-                                        (<figure className='image is-16x16'>
-                                            <img src={origin_logo} alt="Origin" />
-                                        </figure>)}
+                    <Link push exact to={'/apex-user/' + platform + '/' + username} >
+                        <div className='card apex-finder-card'>
+                            <div className='card-content'>
+                                <div className='media'>
+                                    <div className='media-left'>
+                                        <figure className='image is-128x128'>
+                                            <img src={imageUrl} alt={username} />
+                                        </figure>
+                                    </div>
+                                    <div className='media-content'>
+                                        <p className='title is-4'>
+                                            {username}
+                                        </p>
+                                        {platform === 'psn' ? 
+                                            (<figure className='image is-32x32'>
+                                                <img src={playstation_logo} alt="Playstation" />
+                                            </figure>) : 
+                                        platform === 'xbl' ? 
+                                            (<figure className='image is-16x16'>
+                                                <img src={xbox_logo} alt="Xbox" />
+                                            </figure>) : 
+                                            (<figure className='image is-16x16'>
+                                                <img src={origin_logo} alt="Origin" />
+                                            </figure>)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
+                    
                 </div>
             )
         })
