@@ -3,12 +3,10 @@ import { Link, Redirect } from "react-router-dom";
 import black_logo from '../assets/apex-black-logo.png'
 import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
-import { AccountContext } from './Accounts'
+import { Auth } from 'aws-amplify'
 import './auth.css'
 
 class Login extends Component {
-
-    static contextType = AccountContext
 
     constructor(props) {
         super(props)
@@ -41,7 +39,7 @@ class Login extends Component {
         }
     }
 
-    login() {
+    async login() {
         if (this.state.username !== "" && this.state.password !== "") {
             this.setState({
                 notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden',
@@ -51,23 +49,20 @@ class Login extends Component {
                 user_input_error: "",
                 pass_input_error: ""
             })
-            this.context.authenticate(this.state.username, this.state.password)
-                .then(data => {
+                try {
+                    await Auth.signIn(this.state.username, this.state.password)
                     window.location.reload()
-                })
-                .catch(error => {
+                } catch (e) {
                     this.setState({
                         notificationClass: 'notification is-danger apex-notification has-text-centered',
-                        notificationMessage: error.message,
+                        notificationMessage: e.message,
                         user_input_error: "danger-input is-danger",
                         pass_input_error: "danger-input is-danger"
                     })
-                })
-                .finally(() => {
-                    this.setState({
-                        apexButtonClass: 'button is-danger apex-button is-fullwidth',
-                        googleButtonClass: 'button google-button'
-                    })
+                }
+                this.setState({
+                    apexButtonClass: 'button is-danger apex-button is-fullwidth',
+                    googleButtonClass: 'button google-button'
                 })
         } else {
             this.setState({

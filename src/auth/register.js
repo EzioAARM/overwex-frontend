@@ -6,6 +6,7 @@ import white_logo from '../assets/apex-white-logo.svg'
 import google_logo from '../assets/google-logo.svg'
 import { globals } from "../globals";
 import './auth.css'
+import { Auth } from 'aws-amplify'
 
 const UserPool = new CognitoUserPool(globals.USER_POOL_INFO)
 
@@ -50,7 +51,7 @@ class Registro extends Component {
         })
     }
 
-    signUp() {
+    async signUp() {
         this.setState({
             notificationClass: 'notification is-danger apex-notification has-text-centered is-hidden',
             notificationMessage: '',
@@ -58,37 +59,25 @@ class Registro extends Component {
         if (this.state.username !== "" && this.state.email !== "" && this.state.name !== "" &&
         this.state.password !== "" && this.state.confirm_password !== "") {
             if (this.state.password === this.state.confirm_password) {
-                UserPool.signUp(
-                    this.state.username,
-                    this.state.password, 
-                    [
-                        new CognitoUserAttribute({
-                            Name: 'email',
-                            Value: this.state.email
-                        }),
-                        new CognitoUserAttribute({
-                            Name: 'name',
-                            Value: this.state.name
-                        })
-                    ],
-                    null,
-                    (err, data) => {
-                        if (err) {
-                            console.log(err)
-                            this.setState({
-                                notificationClass: 'notification is-danger apex-notification has-text-centered',
-                                notificationMessage: err.message,
-                            })
+                try {
+                    const { user } = await Auth.signUp({
+                        username: this.state.username,
+                        password: this.state.password,
+                        attributes: {
+                            email: this.state.email,
+                            name: this.state.name
                         }
-                        else {
-                            console.log(data)
-                            this.setState({
-                                notificationClass: 'notification is-success has-text-centered',
-                                notificationMessage: 'Se envio un correo a la direccion ' + this.state.email,
-                            })
-                        }
-                    }
-                )
+                    })
+                    this.setState({
+                        notificationClass: 'notification is-success has-text-centered',
+                        notificationMessage: 'Se envio un correo a la direccion ' + this.state.email,
+                    })
+                } catch (e) {
+                    this.setState({
+                        notificationClass: 'notification is-danger apex-notification has-text-centered',
+                        notificationMessage: e.message,
+                    })
+                }
             } else {
                 this.setState({
                     notificationClass: 'notification is-danger apex-notification has-text-centered',

@@ -5,11 +5,9 @@ import {
     Route, 
     BrowserRouter
 } from "react-router-dom"
-import { AnimatedSwitch } from 'react-router-transition';
 import Main from "./main/main"
 import './routing.css'
 import './assets/css/global.css'
-import { AccountContext } from './auth/Accounts'
 import FindUser from './main/find-user'
 import ApexUser from './main/apex-user'
 import Profile from './main/perfil'
@@ -19,8 +17,6 @@ import Registro from './auth/register'
 import Recuperar from './auth/recover'
 
 class Routing extends Component {
-    
-    static contextType = AccountContext
 
     state = {
         isLoggedIn: false,
@@ -28,15 +24,9 @@ class Routing extends Component {
     }
 
     componentDidMount() {
-        this.context.getSession()
-            .then(session => {
-                this.setState({
-                    isLoggedIn: true,
-                })
-            })
-            .finally(() => this.setState({
-                sesionVerificada: true
-            }))
+        this.setState({
+            sesionVerificada: true
+        })
     }
 
     render() {

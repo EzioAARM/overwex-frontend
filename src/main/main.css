@@ -44,3 +44,7 @@
 .apex-finder-card:hover {
     box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 40%), 0 0px 0 1px rgb(10 10 10 / 3%);
 }
+
+.apex-notification {
+    background-color: #B93038 !important;
+}

@@ -1,12 +1,10 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { AccountContext } from "../auth/Accounts";
+import { Link } from "react-router-dom";
+import { Auth } from 'aws-amplify'
 
 class Header extends Component {
-
-    static contextType = AccountContext
 
     constructor(props) {
         super(props)
@@ -31,9 +29,13 @@ class Header extends Component {
         })
     }
 
-    logout() {
-        this.context.logout()
-        window.location.reload()
+    async logout() {
+        try {
+            await Auth.signOut()
+            window.location.reload()
+        } catch (e) {
+            
+        }
     }
 
     render() {

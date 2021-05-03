@@ -1,11 +1,36 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Header from '../layout/header'
 import Sidebar from '../layout/side'
 import './main.css'
+import { Auth } from 'aws-amplify'
 
 class Main extends Component {
 
+    state = {
+        isLoggedIn: false,
+        sesionVerificada: false
+    }
+
+    componentDidMount() {
+        Auth.currentSession().then(data => {
+            console.log(data)
+            this.setState({
+                isLoggedIn: true,
+                sesionVerificada: true
+            })
+        }).catch(error => {
+            console.log(error)
+            this.setState({
+                isLoggedIn: false,
+                sesionVerificada: true
+            })
+        })
+    }
+
     render() {
+        if (this.state.sesionVerificada)
+            if (!this.state.isLoggedIn) return <Redirect to='/login' push /> 
         return (
         <div>
             <Header />

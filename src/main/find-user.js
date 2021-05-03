@@ -39,7 +39,7 @@ class FindUser extends Component {
                 body: JSON.stringify({
                     query: `
                         query {
-                                SearchResultApexUsers (username: "${this.state.user}") {
+                            SearchResultApexUsers (username: "${this.state.user}") {
                                 username,
                                 platform,
                                 imageUrl
@@ -71,7 +71,7 @@ class FindUser extends Component {
                 imageUrl
             } = user
             return (
-                <div className='column' key={platform}>
+                <div className='column is-6-tablet is-12-mobile is-6-desktop' key={platform}>
                     <Link push exact to={'/apex-user/' + platform + '/' + username} >
                         <div className='card apex-finder-card'>
                             <div className='card-content'>
@@ -138,7 +138,7 @@ class FindUser extends Component {
                 {
                     this.state.realizoBusqueda ? 
                         this.state.usersDataRender.length > 0 ? 
-                        (<div className='columns'>
+                        (<div className='columns is-multiline is-fullhd'>
                             {this.renderResultTable()}
                         </div>) : (<h1>No se encontro informacion del usuario :(</h1>) : null
                 }
