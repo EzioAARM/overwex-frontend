@@ -6,6 +6,7 @@ import octane_face from '../assets/octane_face.jpg'
 import 'zingchart/es6';
 import ZingChart from 'zingchart-react';
 import { globals } from "../globals";
+import { Auth } from 'aws-amplify'
 
 class ApexUser extends Component {
     
@@ -16,51 +17,57 @@ class ApexUser extends Component {
             legendsActive: true,
             rankItemsDisplay: 10
         }
-        fetch(globals.GRAPH_API, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: `
-                    query {
-                        ApexUserProfile (username: "${this.props.user}", platform: "${this.props.platform}") {
-                            username,
-                            platform,
-                            imageUrl,
-                            kills,
-                            level,
-                            legends {
-                                name,
+        Auth.currentSession().then(data => {
+            fetch(globals.GRAPH_API, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': data.getAccessToken().getJwtToken()
+                },
+                body: JSON.stringify({
+                    query: `
+                        query {
+                            ApexUserProfile (username: "${this.props.user}", platform: "${this.props.platform}") {
+                                username,
+                                platform,
                                 imageUrl,
-                                tallImageUrl,
-                                bgImageUrl,
                                 kills,
-                                isSelected
-                            },
-                            rankHistory {
-                                rankName,
-                                rankValue,
-                                rankIconUrl,
-                                fechaRegistrado,
-                                fechaUnix
+                                level,
+                                legends {
+                                    name,
+                                    imageUrl,
+                                    tallImageUrl,
+                                    bgImageUrl,
+                                    kills,
+                                    isSelected
+                                },
+                                rankHistory {
+                                    rankName,
+                                    rankValue,
+                                    rankIconUrl,
+                                    fechaRegistrado,
+                                    fechaUnix
+                                }
                             }
                         }
-                    }
-                `
+                    `
+                })
+            }).then(res => res.json())
+            .then(res => {
+                this.setState({
+                    realizoBusqueda: true,
+                    userInfo: res.data.ApexUserProfile,
+                    obtuvoData: false
+                })
             })
-        }).then(res => res.json())
-        .then(res => {
-            this.setState({
-                realizoBusqueda: true,
-                userInfo: res.data.ApexUserProfile
+            .catch(error => {
+                console.log(error.response)
+                this.setState({
+                    obtuvoData: false
+                })
             })
-        })
-        .catch(error => console.log(error))
-        .finally(() => {
-            this.setState({
-                obtuvoData: true
-            })
+        }).catch(error => {
+            console.log(error)
         })
         this.renderRankedGraph = this.renderRankedGraph.bind(this)
     }

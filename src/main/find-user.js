@@ -5,6 +5,7 @@ import { globals } from "../globals";
 import playstation_logo from '../assets/playstation.png'
 import origin_logo from '../assets/origin.png'
 import xbox_logo from '../assets/xbox.png'
+import { Auth } from 'aws-amplify'
 
 class FindUser extends Component {
 
@@ -31,34 +32,40 @@ class FindUser extends Component {
             this.setState({
                 find_button_class: 'button is-danger apex-button is-pulled-left is-loading'
             })
-            fetch(globals.GRAPH_API, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: `
-                        query {
-                            SearchResultApexUsers (username: "${this.state.user}") {
-                                username,
-                                platform,
-                                imageUrl
+            Auth.currentSession().then(data => {
+                fetch(globals.GRAPH_API, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': data.getAccessToken().getJwtToken()
+                    },
+                    body: JSON.stringify({
+                        query: `
+                            query {
+                                SearchResultApexUsers (username: "${this.state.user}") {
+                                    username,
+                                    platform,
+                                    imageUrl
+                                }
                             }
-                        }
-                    `
+                        `
+                    })
+                }).then(res => res.json())
+                .then(res => {
+                    console.log(res)
+                    this.setState({
+                        realizoBusqueda: true,
+                        usersDataRender: res.data.SearchResultApexUsers
+                    })
                 })
-            }).then(res => res.json())
-            .then(res => {
-                this.setState({
-                    realizoBusqueda: true,
-                    usersDataRender: res.data.SearchResultApexUsers
+                .catch(error => console.log(error.response))
+                .finally(() => {
+                    this.setState({
+                        find_button_class: 'button is-danger apex-button is-pulled-left'
+                    })
                 })
-            })
-            .catch(error => console.log(error))
-            .finally(() => {
-                this.setState({
-                    find_button_class: 'button is-danger apex-button is-pulled-left'
-                })
+            }).catch(error => {
+                console.log(error)
             })
         }
     }
